@@ -1,0 +1,20 @@
+import { Modal as ModalBS } from "react-bootstrap"
+import { Button } from "../button/Button"
+
+export const Modal = ({ title, children, open, controls = [], onHide }) => {
+   return (
+      <ModalBS show={open} onHide={onHide}>
+        <ModalBS.Header closeButton>
+          <ModalBS.Title>{title}</ModalBS.Title>
+        </ModalBS.Header>
+        <ModalBS.Body>{children}</ModalBS.Body>
+        <ModalBS.Footer>
+        {controls.map((control, controlIndex) => (
+          <Button key={controlIndex}
+            {...control}
+         />
+        ))}
+        </ModalBS.Footer>
+      </ModalBS>
+   )
+}

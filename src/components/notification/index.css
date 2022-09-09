@@ -1,0 +1,6 @@
+.notification {
+   position: fixed;
+   bottom: 20px;
+   right: 5px;
+   transform: translateX(-50%);
+}
