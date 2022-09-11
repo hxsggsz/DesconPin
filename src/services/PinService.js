@@ -1,14 +1,15 @@
-export const getFolders = async () => {
-   return JSON.parse(localStorage.getItem('folders')) || []
-}
-
 const generateRandomId = () => {
-   return Math.floor(Math.random() * 100000).toString(16)
+   return `${(Math.floor(Math.random() * 100000)).toString(16)}`
 }
 
 const saveInFolder = async (folders) => {
    localStorage.setItem('folders', JSON.stringify(folders))
 }
+
+export const getFolders = async () => {
+   return JSON.parse(localStorage.getItem('folders')) || []
+}
+
 export const saveFolder = async (folderName) => {
    const folders = await getFolders()
 
@@ -21,6 +22,8 @@ export const saveFolder = async (folderName) => {
    folders.push(newFolder)
 
    await saveInFolder(folders)
+
+   return newFolder
 }
 
 export const savePinInFolder = async (folderId, pinId) => {
@@ -33,8 +36,8 @@ export const savePinInFolder = async (folderId, pinId) => {
    if(foldersIndex !== -1) {
       folders[foldersIndex].pins.push(pinId)
    }
-
    await saveInFolder(folders)
 
    return {...folders[foldersIndex]}
+
 }

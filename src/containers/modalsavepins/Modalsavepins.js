@@ -2,19 +2,36 @@ import { ListGroup, Row, Col } from "react-bootstrap";
 import { Button } from "../../components/button/Button";
 import { Modal } from "../../components/modals/Modal";
 import { useAppContext } from "../../store/AppContext";
-import { closeModalAction, fetchFoldersAction } from "../../store/Actions";
+import {
+    closeModalAction,
+    fetchFoldersAction,
+    openModalSavePinAction,
+    openModalCreateFolderAction,
+    savePinInFolderAction
+    } from "../../store/Actions";
 import { useEffect } from "react";
 
 export const Modalsavepins = ({ open }) => {
    const { state, dispatch } = useAppContext();
+
    const handleClose = () => {
-      console.log('fechando')
       dispatch(closeModalAction())
+   }
+
+   const handleClickCreateFolder = () => {
+      dispatch(openModalCreateFolderAction());
+   }
+
+   const handleClick = (pinId, folderId) => {
+      console.log(state)
+      savePinInFolderAction(dispatch, state.activePinId, folderId)
    }
 
    useEffect(() => {
       fetchFoldersAction(dispatch)
    }, [])
+
+
    return (
       <Modal
       title='Salvar pin'
@@ -26,19 +43,19 @@ export const Modalsavepins = ({ open }) => {
          variant: 'secondary',
          loading: false,
          loadinglabel: 'criando',   
-         onclick: () => {
-            console.log('clicou criar pasta')
-         }
+         onClick: handleClickCreateFolder
       }
       ]}
       >
          <ListGroup variant="flush">
-         {state.folders.map((folder, folderIndex) => (
-            <div>
-               <ListGroup.Item key={folderIndex}>
+         {state.folders.map(folder => (
+            <div key={folder.id}>
+               <ListGroup.Item>
                   <Row>
                      <Col xs={8}>{folder.name}</Col>
-                     <Col xs={4} className='text-end'><Button label='salvar' /></Col>
+                     <Col xs={4} className='text-end'>
+                        <Button label='salvar' onClick={() => handleClick( folder.id)} />
+                     </Col>
                   </Row>
                </ListGroup.Item>
             </div>
