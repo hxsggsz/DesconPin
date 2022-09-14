@@ -3,7 +3,7 @@ import { Form } from "react-bootstrap";
 import { Modal } from "../../../components/modals/Modal";
 import { useAppContext } from "../../../store/AppContext";
 import { saveFoldersInitType, saveFoldersSuccessType } from "../../../store/Types";
-import { closeModalAction, saveFoldersAction } from "../../../store/Actions";
+import { closeModalAction, saveFoldersAction, openModalSavePinAction } from "../../../store/Actions";
 
 export const Modalcreatefolder = ({ open }) => {
    const { state, dispatch } = useAppContext()
@@ -27,6 +27,9 @@ export const Modalcreatefolder = ({ open }) => {
    useEffect(() => {
       if(state.type === saveFoldersSuccessType) {
          handleClose()
+         setTimeout(() => {
+            dispatch(openModalSavePinAction(state.pins.id))
+         }, 500);
       }
    },[state.type])
 

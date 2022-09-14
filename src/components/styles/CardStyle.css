@@ -7,4 +7,5 @@
 .fotos{
    justify-self: center;
    justify-content: space-around;
+   height: 400px;
 }

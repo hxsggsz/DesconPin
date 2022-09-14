@@ -1,10 +1,5 @@
 import * as types from "./Types";
 import * as pinService from "../services/PinService"
-const sleep = (time) => (           //função criada para ser possivel
-   new Promise(Resolve => {         //ver o loading nos botões pois
-      setTimeout(Resolve, time);    //como está tudo sendo salvo no
-   })                               //localStorage, é tudo muito rapido
-)                                   //e não é possível ver o loading nos botões
 
 export const openModalSavePinAction = (pinId) => ({
    type: types.openModalSavePinType,
@@ -45,21 +40,42 @@ export const saveFoldersSuccessAction = (folder) => ({
 
 export const saveFoldersAction = async (dispatch, folderName) => {
    dispatch(saveFoldersInitAction())
-   await sleep(1000);
-
-   const newFolder = await pinService.saveFolder(folderName)
-   dispatch(saveFoldersSuccessAction(newFolder)) 
+   //esse setTimeout serve para ser posivel ver o loading do botão
+   setTimeout(async () => {                                                         
+      const newFolder = await pinService.saveFolder(folderName) 
+   dispatch(saveFoldersSuccessAction(newFolder))                
+   }, 1000)
 }
 
 export const savePinInFoldersInitAction = () => ({
    type: types.savePinInFoldersInitType,
 })
 
-export const savePinInFoldersSuccessAction = () => ({
+export const savePinInFoldersSuccessAction = (folders) => ({
    type: types.savePinInFoldersSuccessType,
+   payload: folders
 })
 
 export const savePinInFolderAction = async (dispatch, pinId, folderId) => {
    dispatch(savePinInFoldersInitAction());
-   await pinService.savePinInFolder(folderId, pinId)
+   setTimeout( async () => {
+      await pinService.savePinInFolder(folderId, pinId);
+      const folders = await pinService.getFolders();
+      dispatch(savePinInFoldersSuccessAction(folders))
+   }, 1000)
+}
+
+export const fetchPinsInitAction = () => ({
+   type: types.fetchPinsInitType
+})
+
+export const fetchPinsSuccessAction = (pinsData) => ({
+   type: types.fetchPinsSuccessType,
+   payload: pinsData
+})
+
+export const fetchPinsAction = async (dispatch) => {
+   dispatch(fetchPinsInitAction())
+   const pinsData = await pinService.getPins()
+   dispatch(fetchPinsSuccessAction(pinsData))
 }

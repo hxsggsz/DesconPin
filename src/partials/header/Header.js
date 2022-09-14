@@ -13,7 +13,7 @@ export const Header = () => {
           <Nav className="me-auto">
             <Link className="nav-link" to="/">Home</Link>
             <Link className="nav-link" to="/minhas-pastas">Minhas Pastas</Link>
-          </Nav>
+          </Nav> 
         </Navbar.Collapse>
       </Container>
     </Navbar>
